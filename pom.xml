@@ -61,6 +61,44 @@
                 <configuration>
                     <stylesheetfile>${basedir}/mystylesheet.css</stylesheetfile>
                     <charset>UTF-8</charset>
+                    <header><![CDATA[
+<script>
+function change(){
+  var supportedLang = ["en", "ja"];
+  var browserLang;
+  if(document.all){
+    browserLang = navigator.browserLanguage;
+  } else if(document.layers){
+    browserLang = navigator.language;
+  } else if(document.getElementById){
+    browserLang = navigator.language.substr(0,2);
+  }
+  var lang = supportedLang[0];
+  for(var i=0; i < supportedLang.length; i++){
+    if(supportedLang[i] == browserLang){
+      lang = browserLang;
+      break;
+    }
+  }
+  if(document.styleSheets[0]){
+    var rules = document.styleSheets[0].cssRules;
+    if(!rules){
+      rules = document.styleSheets[0].rules;
+    }
+    for(var i=0; i< rules.length;i++){
+      if(rules[i].selectorText.length == 3){
+        if(rules[i].selectorText == "."+lang){
+          rules[i].style.display = "block";
+        }else{
+        rules[i].style.display = "none";
+        }
+      }
+    }
+  }
+}
+window.onload=change;
+</script>
+                    ]]></header>
                 </configuration>
             </plugin>
             <plugin>
